@@ -19,6 +19,19 @@ SELECT *
 FROM Arts.Performer;
 GO
 
+--two active users case: psudo code
+-- Begin TRANSACTION
+
+-- SELECT balance
+-- from table1 
+-- where acct = '1111';
+
+-- update tabel1
+-- set balance = 500 + 500
+-- where account = '1111'
+
+-- COMMIT TRANSACTION
+
 
 
 
