@@ -67,8 +67,42 @@ VALUES (1, 1, 'last Supper'),
        (3, 6, 'Rabbit Fire');
 GO
 
+--Isolation test on Read Uncommited
+--connection A
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
+BEGIN TRANSACTION
+INSERT Into Art.Artist(ArtistID,Name)
+VALUES (8, 'Thomas');
+ROLLBACK TRANSACTION;
+
+--connection B
+-- SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
+-- SELECT ArtistID, Name 
+-- FROM Art.Artist
+-- WHERE Name = 'Thomas';
+-- GO
+
+SELECT * 
+from Sales.Shippers;
+
+INSERT INTO Sales.Shippers (companyname, phone)
+    VALUES ('Shipper XYZ', '(123)456-789');INSERT INTO Sales.Shippers (companyname, phone)
+    VALUES ('Shipper XYZ', '(123)456-789');
 
 
+SELECT S.shipperid
+from Sales.Shippers as S 
+WHERE NOT Exists 
+    (
+        Select *
+        from Sales.Orders as O 
+        WHERE O.shipperid = S.shipperid
+    );
 
+SELECT S.shipperid
+FROM Sales.Shippers as S 
+    LEFT OUTER JOIN Sales.Orders as O 
+        ON S.shipperid = O.shipperid
+WHERE O.orderid IS NULL;
 
-
+DELETE From Sales.Shippers WHERE shipperid > 3;
